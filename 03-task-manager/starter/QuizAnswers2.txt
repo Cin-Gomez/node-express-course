@@ -1,0 +1,15 @@
+1. The reason why we created an asyncWrapper was to avoid redundant code. In this case, it was the try catch block code that
+was needed with every controller. The asyncWrapper is a function that we could easily add to each controller. It would 
+limit the length of the code and make it easier to read and maintain. It was important to still use the try catch block code 
+to catch errors so we created the asyncWrapper.
+
+2. 
+const getTask = asyncWrapper (async (req, res, next) => {
+        const {id: taskID} = req.params
+        const task = await Task.findOne({_id: taskID})
+        if (!task) {
+            return next(createCustomError (`No task with id: ${taskID}`, 404))
+        }
+        res.status(200).json({task})
+    
+})
